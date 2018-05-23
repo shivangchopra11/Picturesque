@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/navigation_camera"
+        android:icon="@drawable/ic_nav_cam_black_24dp"
+        android:title="@string/title_dashboard" />
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_home" />
+
+
+
+    <item
+        android:id="@+id/navigation_gallery"
+        android:icon="@drawable/ic_gallery_black_24dp"
+        android:title="@string/title_notifications" />
+
+</menu>
