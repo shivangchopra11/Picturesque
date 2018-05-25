@@ -58,8 +58,7 @@ class MainActivity : FragmentActivity(), OnRequestPermissionsResultCallback,Perm
         permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
 
         permissionUtils!!.checkPermission(permissions,"The app needs external storage and camera permissions",1)
-
-
+//        showCameraPreview()
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
@@ -88,5 +87,7 @@ class MainActivity : FragmentActivity(), OnRequestPermissionsResultCallback,Perm
         Log.i("PERMISSION","NEVER ASK AGAIN");
     }
 
-
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        permissionUtils!!.onRequestPermissionsResult(requestCode,permissions,grantResults)
+    }
 }

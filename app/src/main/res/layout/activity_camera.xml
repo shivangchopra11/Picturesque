@@ -8,24 +8,49 @@
     tools:context="com.example.shivang.picturesque.MainActivity"
     android:orientation="vertical">
 
-    <FrameLayout
+    <!--<FrameLayout-->
+        <!--android:id="@+id/imgv_photo"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="10" />-->
+    <TextureView
         android:id="@+id/imgv_photo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10" />
+        android:layout_weight="10"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center"
-        android:background="@android:color/black">
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_camera_white_40dp"
-            android:background="@android:color/black"
-            android:id="@+id/btn_click_pic"/>
+        android:background="@android:color/transparent"
+        android:alpha="0.5">
 
+        <ImageButton
+            android:id="@+id/btn_rev_cam"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_camera_white_40dp" />
+
+        <ImageButton
+            android:id="@+id/btn_click_pic"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_camera_white_40dp" />
+
+        <ImageButton
+            android:id="@+id/btn_adv_cam"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_camera_white_40dp" />
     </LinearLayout>
 </LinearLayout>
