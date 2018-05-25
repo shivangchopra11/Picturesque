@@ -3,19 +3,30 @@ package com.example.shivang.picturesque
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.*
+import android.os.Environment
 import android.os.Handler
 import android.support.v4.app.ActivityCompat
 import android.os.HandlerThread
+import android.util.Log
 import android.util.Size
 import android.view.*
+import android.widget.Button
+import android.widget.ImageButton
+import java.io.File
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
 import java.util.*
 
 
-class CameraFragment : Fragment() {
+
+
+class CameraFragment : Fragment(), View.OnClickListener {
+
 
     companion object {
         fun newInstance() = CameraFragment()
@@ -35,6 +46,10 @@ class CameraFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView =  inflater.inflate(R.layout.activity_camera, container, false)
+
+        var clickBtn : ImageButton = rootView.findViewById(R.id.btn_click_pic)
+        clickBtn.setOnClickListener(this)
+
         cameraManager = activity!!.getSystemService(Context.CAMERA_SERVICE) as CameraManager
         cameraFacing = CameraCharacteristics.LENS_FACING_BACK
         textureView = rootView.findViewById(R.id.imgv_photo) as TextureView
@@ -85,7 +100,7 @@ class CameraFragment : Fragment() {
 
 
     private fun setUpCamera() {
-        try {
+//        try {
             for (cameraId in cameraManager.cameraIdList) {
                 val cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId)
                 if (cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) == cameraFacing) {
@@ -95,10 +110,10 @@ class CameraFragment : Fragment() {
                     this.cameraId = cameraId
                 }
             }
-        } catch (e: CameraAccessException) {
-            e.printStackTrace()
-        }
-
+//        } catch (e: CameraAccessException) {
+//            e.printStackTrace()
+//        }
+        createImageGallery()
     }
 
 
@@ -194,7 +209,45 @@ class CameraFragment : Fragment() {
         } catch (e: CameraAccessException) {
             e.printStackTrace()
         }
-
     }
 
+    private var galleryFolder : File? = null
+    fun createImageGallery() {
+        var storageDirectory : File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        galleryFolder = object : File(storageDirectory, resources.getString(R.string.app_name)){}
+        if(!galleryFolder!!.exists()) {
+            var wasCreated : Boolean = galleryFolder!!.mkdirs()
+            if (!wasCreated) {
+                Log.e("CapturedImages", "Failed to create directory")
+            }
+        }
+    }
+
+    fun createImageFile(galleryFolder : File) : File {
+        var timeStamp : String = object : SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()){}.format(object : Date(){})
+        var imageFileName : String = "image_" + timeStamp + "_"
+        return File.createTempFile(imageFileName, ".jpg", galleryFolder)
+    }
+
+    fun lock() {
+        curCameraCaptureSession!!.capture(captureRequestBuilder!!.build(), null, backgroundHandler)
+    }
+
+    fun unlock() {
+        curCameraCaptureSession!!.setRepeatingRequest(captureRequestBuilder!!.build(), null, backgroundHandler)
+    }
+
+    override fun onClick(v: View?) {
+        Log.v("CLICKED", "PIC CLICKED")
+        if(v!!.id==R.id.btn_click_pic) {
+            lock()
+            var outputPhoto: FileOutputStream? = null
+            outputPhoto = FileOutputStream(createImageFile(galleryFolder!!))
+            textureView.bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputPhoto)
+            unlock()
+            if(outputPhoto != null)
+                outputPhoto.close()
+        }
+    }
 }
+
