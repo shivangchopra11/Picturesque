@@ -1,4 +1,4 @@
-package com.example.shivang.picturesque
+package com.example.shivang.picturesque.Permissions
 
 import android.app.Activity
 import android.content.Context
@@ -10,9 +10,6 @@ import android.support.v4.content.ContextCompat
 import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
 import android.widget.Toast
-
-
-
 
 
 class PermissionUtils(val context: Context) {

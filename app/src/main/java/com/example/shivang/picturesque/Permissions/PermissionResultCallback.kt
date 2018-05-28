@@ -1,4 +1,4 @@
-package com.example.shivang.picturesque
+package com.example.shivang.picturesque.Permissions
 
 interface PermissionResultCallback {
     fun PermissionGranted(request_code: Int)

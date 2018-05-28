@@ -1,22 +1,20 @@
 package com.example.shivang.picturesque
 
 import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
-import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import android.support.annotation.NonNull
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback
 import android.support.v4.app.FragmentActivity
+import com.example.shivang.picturesque.Camera.CameraFragment
+import com.example.shivang.picturesque.Gallery.GalleryFragment
+import com.example.shivang.picturesque.Permissions.PermissionResultCallback
+import com.example.shivang.picturesque.Permissions.PermissionUtils
 
 
-class MainActivity : FragmentActivity(), OnRequestPermissionsResultCallback,PermissionResultCallback {
+class MainActivity : FragmentActivity(), OnRequestPermissionsResultCallback, PermissionResultCallback {
 
     var permissions: ArrayList<String> = ArrayList()
     var permissionUtils: PermissionUtils? = null
@@ -24,19 +22,17 @@ class MainActivity : FragmentActivity(), OnRequestPermissionsResultCallback,Perm
     private val TAG : String = "TAG"
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
-//            R.id.navigation_home -> {
-//                message.setText(R.string.title_home)
-//                return@OnNavigationItemSelectedListener true
-//            }
-            R.id.navigation_camera -> {
-
-
+            R.id.navigation_gallery -> {
+                showGallery()
                 return@OnNavigationItemSelectedListener true
             }
-//            R.id.navigation_notifications -> {
-//                message.setText(R.string.title_notifications)
-//                return@OnNavigationItemSelectedListener true
-//            }
+            R.id.navigation_camera -> {
+                showCameraPreview();
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_home -> {
+                return@OnNavigationItemSelectedListener true
+            }
         }
         false
     }
@@ -47,11 +43,17 @@ class MainActivity : FragmentActivity(), OnRequestPermissionsResultCallback,Perm
                 .commit()
     }
 
+    private fun showGallery() {
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.mainFrag, GalleryFragment.newInstance() as Fragment)
+                .commit()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        permissionUtils =  PermissionUtils(this)
+        permissionUtils = PermissionUtils(this)
 
         permissions.add(Manifest.permission.CAMERA)
         permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)

@@ -1,4 +1,4 @@
-package com.example.shivang.picturesque
+package com.example.shivang.picturesque.Camera
 
 
 import android.content.Context
@@ -15,8 +15,8 @@ import android.os.HandlerThread
 import android.util.Log
 import android.util.Size
 import android.view.*
-import android.widget.Button
 import android.widget.ImageButton
+import com.example.shivang.picturesque.R
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -49,6 +49,8 @@ class CameraFragment : Fragment(), View.OnClickListener {
 
         var clickBtn : ImageButton = rootView.findViewById(R.id.btn_click_pic)
         clickBtn.setOnClickListener(this)
+        var revCamBtn : ImageButton = rootView.findViewById(R.id.btn_rev_cam)
+        revCamBtn.setOnClickListener(this)
 
         cameraManager = activity!!.getSystemService(Context.CAMERA_SERVICE) as CameraManager
         cameraFacing = CameraCharacteristics.LENS_FACING_BACK
@@ -212,42 +214,53 @@ class CameraFragment : Fragment(), View.OnClickListener {
     }
 
     private var galleryFolder : File? = null
-    fun createImageGallery() {
-        var storageDirectory : File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+    private fun createImageGallery() {
+        val storageDirectory : File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
         galleryFolder = object : File(storageDirectory, resources.getString(R.string.app_name)){}
         if(!galleryFolder!!.exists()) {
-            var wasCreated : Boolean = galleryFolder!!.mkdirs()
+            val wasCreated : Boolean = galleryFolder!!.mkdirs()
             if (!wasCreated) {
                 Log.e("CapturedImages", "Failed to create directory")
             }
         }
     }
 
-    fun createImageFile(galleryFolder : File) : File {
-        var timeStamp : String = object : SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()){}.format(object : Date(){})
-        var imageFileName : String = "image_" + timeStamp + "_"
+    private fun createImageFile(galleryFolder : File) : File {
+        val timeStamp : String = object : SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()){}.format(object : Date(){})
+        val imageFileName : String = "image_" + timeStamp + "_"
         return File.createTempFile(imageFileName, ".jpg", galleryFolder)
     }
 
-    fun lock() {
+    private fun lock() {
         curCameraCaptureSession!!.capture(captureRequestBuilder!!.build(), null, backgroundHandler)
     }
 
-    fun unlock() {
+    private fun unlock() {
         curCameraCaptureSession!!.setRepeatingRequest(captureRequestBuilder!!.build(), null, backgroundHandler)
     }
 
     override fun onClick(v: View?) {
         Log.v("CLICKED", "PIC CLICKED")
-        if(v!!.id==R.id.btn_click_pic) {
+        if(v!!.id== R.id.btn_click_pic) {
             lock()
-            var outputPhoto: FileOutputStream? = null
+            val outputPhoto: FileOutputStream?
             outputPhoto = FileOutputStream(createImageFile(galleryFolder!!))
             textureView.bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputPhoto)
             unlock()
-            if(outputPhoto != null)
-                outputPhoto.close()
+            outputPhoto.close()
+        }
+        else if(v!!.id== R.id.btn_rev_cam) {
+            closeCamera()
+            closeBackgroundThread()
+            cameraFacing = if(cameraFacing==CameraCharacteristics.LENS_FACING_FRONT)
+                CameraCharacteristics.LENS_FACING_BACK
+            else
+                CameraCharacteristics.LENS_FACING_FRONT
+            openBackgroundThread()
+            setUpCamera()
+            openCamera()
         }
     }
+
 }
 

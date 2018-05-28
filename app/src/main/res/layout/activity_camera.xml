@@ -33,7 +33,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="left"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_camera_white_40dp" />
+            android:src="@drawable/ic_switch_cam_black" />
 
         <ImageButton
             android:id="@+id/btn_click_pic"
@@ -51,6 +51,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_camera_white_40dp" />
+            android:src="@drawable/ic_camera_control" />
     </LinearLayout>
 </LinearLayout>
