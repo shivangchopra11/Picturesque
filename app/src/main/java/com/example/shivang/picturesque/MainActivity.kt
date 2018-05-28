@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback
 import android.support.v4.app.FragmentActivity
 import com.example.shivang.picturesque.Camera.CameraFragment
 import com.example.shivang.picturesque.Gallery.GalleryFragment
+import com.example.shivang.picturesque.Gallery.PhotoFragment
 import com.example.shivang.picturesque.Permissions.PermissionResultCallback
 import com.example.shivang.picturesque.Permissions.PermissionUtils
 
@@ -46,6 +47,12 @@ class MainActivity : FragmentActivity(), OnRequestPermissionsResultCallback, Per
     private fun showGallery() {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.mainFrag, GalleryFragment.newInstance() as Fragment)
+                .commit()
+    }
+
+    fun startPhotoFragment() {
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.mainFrag, PhotoFragment.newInstance() as Fragment)
                 .commit()
     }
 
@@ -92,4 +99,7 @@ class MainActivity : FragmentActivity(), OnRequestPermissionsResultCallback, Per
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         permissionUtils!!.onRequestPermissionsResult(requestCode,permissions,grantResults)
     }
+
+
+
 }

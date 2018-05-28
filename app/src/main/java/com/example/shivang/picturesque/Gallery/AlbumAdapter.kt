@@ -1,17 +1,23 @@
 package com.example.shivang.picturesque.Gallery
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.shivang.picturesque.MainActivity
 import com.example.shivang.picturesque.R
 import com.squareup.picasso.Picasso
 
 
-class AlbumAdapter(private val mContext: Context, var id1:Int) : RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>() {
+class AlbumAdapter(private val mContext: Context, val galleryFragment: GalleryFragment,val activity : Activity) : RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>() {
 
     private var mAlbumList: ArrayList<PhoneAlbum>? = null
     private var mInflater: LayoutInflater = LayoutInflater.from(mContext)
@@ -22,10 +28,7 @@ class AlbumAdapter(private val mContext: Context, var id1:Int) : RecyclerView.Ad
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
-        view = if(id1==2)
-            mInflater.inflate(R.layout.gallery_list_card, parent, false)
-        else
-            mInflater.inflate(R.layout.gallery_list_card, parent, false)
+        view = mInflater.inflate(R.layout.gallery_list_card, parent, false)
         return AlbumViewHolder(view)
     }
 
@@ -42,7 +45,25 @@ class AlbumAdapter(private val mContext: Context, var id1:Int) : RecyclerView.Ad
                 .placeholder( R.color.colorPrimary )
                 .into( holder.imageView )
         holder.tvName.text = album.getName()
+        holder.itemView.setOnClickListener{
+//            var intent = Intent(mContext, MainActivity::class.java)
+            var photoList : ArrayList<String> = object : ArrayList<String>(){}
+            for(i : PhonePhoto in album.getAlbumPhotos()) {
+                photoList.add(i.getPhotoUri()!!)
+                Log.v("photo",i.getPhotoUri())
+            }
+            var bundle = Bundle()
+            bundle.putStringArrayList("photos",photoList)
+            activity.intent.putExtras(bundle)
+//            var act1 = activity as MainActivity
+//            act1.startPhotoFragment()
+
+            galleryFragment.startPhotoFragment()
+
+        }
     }
+
+
 
     fun setAlbumList(movieList: List<PhoneAlbum>) {
         this.mAlbumList!!.clear()
