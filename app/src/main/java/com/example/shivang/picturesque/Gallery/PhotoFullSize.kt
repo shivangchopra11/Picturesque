@@ -42,8 +42,7 @@ class PhotoFullSize : AppCompatActivity() {
         mPager.setCurrentItem(currentPage, true)
         numPages = imageList.size
 
-
-
+        
 //        For auto slideshow functionality
 
 

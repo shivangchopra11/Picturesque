@@ -55,6 +55,7 @@ class AlbumAdapter(private val mContext: Context, val galleryFragment: GalleryFr
             var bundle = Bundle()
             bundle.putStringArrayList("photos",photoList)
             activity.intent.putExtras(bundle)
+            activity.intent.putExtra("status",1)
 //            var act1 = activity as MainActivity
 //            act1.startPhotoFragment()
 

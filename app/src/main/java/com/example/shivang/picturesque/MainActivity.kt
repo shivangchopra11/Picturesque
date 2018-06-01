@@ -8,13 +8,14 @@ import android.support.v4.app.Fragment
 import android.util.Log
 import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback
 import android.support.v4.app.FragmentActivity
+import android.support.v7.app.AppCompatActivity
 import com.example.shivang.picturesque.Camera.CameraFragment
 import com.example.shivang.picturesque.Gallery.GalleryFragment
 import com.example.shivang.picturesque.Permissions.PermissionResultCallback
 import com.example.shivang.picturesque.Permissions.PermissionUtils
 
 
-class MainActivity : FragmentActivity(), OnRequestPermissionsResultCallback, PermissionResultCallback {
+class MainActivity : AppCompatActivity(), OnRequestPermissionsResultCallback, PermissionResultCallback {
 
     var permissions: ArrayList<String> = ArrayList()
     var permissionUtils: PermissionUtils? = null
@@ -98,6 +99,20 @@ class MainActivity : FragmentActivity(), OnRequestPermissionsResultCallback, Per
         permissionUtils!!.onRequestPermissionsResult(requestCode,permissions,grantResults)
     }
 
+    override fun onBackPressed() {
+        if(navigation.menu.getItem(2).isChecked) {
+            if(intent.getIntExtra("status",0)==1) {
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.mainFrag, GalleryFragment.newInstance() as Fragment)
+                        .commit()
+                intent.putExtra("status",0)
 
-
+            }
+            else {
+                super.onBackPressed()
+            }
+        }
+        else
+            super.onBackPressed()
+    }
 }
