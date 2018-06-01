@@ -10,7 +10,6 @@ import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback
 import android.support.v4.app.FragmentActivity
 import com.example.shivang.picturesque.Camera.CameraFragment
 import com.example.shivang.picturesque.Gallery.GalleryFragment
-import com.example.shivang.picturesque.Gallery.PhotoFragment
 import com.example.shivang.picturesque.Permissions.PermissionResultCallback
 import com.example.shivang.picturesque.Permissions.PermissionUtils
 
@@ -50,15 +49,12 @@ class MainActivity : FragmentActivity(), OnRequestPermissionsResultCallback, Per
                 .commit()
     }
 
-    fun startPhotoFragment() {
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.mainFrag, PhotoFragment.newInstance() as Fragment)
-                .commit()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
 
         permissionUtils = PermissionUtils(this)
 
@@ -70,6 +66,8 @@ class MainActivity : FragmentActivity(), OnRequestPermissionsResultCallback, Per
 //        showCameraPreview()
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        navigation.menu.getItem(2).isChecked = true
+        showGallery()
     }
 
 

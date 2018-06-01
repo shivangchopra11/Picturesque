@@ -1,6 +1,10 @@
 package com.example.shivang.picturesque.Gallery
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +14,7 @@ import android.widget.TextView
 import com.example.shivang.picturesque.R
 import com.squareup.picasso.Picasso
 
-class PhotoAdapter(private val mContext: Context) : RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder>() {
+class PhotoAdapter(private val mContext: Context, var activity : Activity) : RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder>() {
 
     private var mPhotoList: ArrayList<String>? = null
     private var mInflater: LayoutInflater = LayoutInflater.from(mContext)
@@ -32,11 +36,21 @@ class PhotoAdapter(private val mContext: Context) : RecyclerView.Adapter<PhotoAd
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         val photo = mPhotoList!![position]
         Picasso.with( mContext )
-                .load( "file:" + photo )
+                .load("file:$photo")
                 .centerCrop()
                 .fit()
                 .placeholder( R.color.colorPrimary )
                 .into( holder.imageView )
+
+        holder.itemView.setOnClickListener {
+            val i = Intent(mContext, PhotoFullSize::class.java)
+            i.putExtra("pos",position)
+
+            var bundle = Bundle()
+            bundle.putStringArrayList("photoList",mPhotoList)
+            i.putExtras(bundle)
+            startActivity(mContext,i,null)
+        }
     }
 
     fun setPhotoList(movieList: List<String>) {

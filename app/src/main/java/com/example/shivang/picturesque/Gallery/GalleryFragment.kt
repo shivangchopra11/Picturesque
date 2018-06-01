@@ -15,6 +15,9 @@ import com.example.shivang.picturesque.MainActivity
 import com.example.shivang.picturesque.R
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
+import android.support.v7.widget.DividerItemDecoration
+
+
 
 class GalleryFragment : Fragment(),OnPhoneImagesObtained {
 
@@ -30,6 +33,8 @@ class GalleryFragment : Fragment(),OnPhoneImagesObtained {
         mContext = container!!.context
         var rootLayout = inflater.inflate(R.layout.activity_gallery_albums,container,false)
         mRecyclerView = rootLayout.findViewById(R.id.list_albums)
+
+        mRecyclerView.addItemDecoration(SpacesItemDecoration(4))
         mRecyclerView.layoutManager = GridLayoutManager(container!!.context,2)
         mAdapter = AlbumAdapter(container!!.context,this,activity as Activity)
         mRecyclerView.adapter = mAdapter
@@ -49,7 +54,7 @@ class GalleryFragment : Fragment(),OnPhoneImagesObtained {
 
 
     fun startPhotoFragment() {
-        var mAdapter = PhotoAdapter(mContext)
+        var mAdapter = PhotoAdapter(mContext,activity as Activity)
         mRecyclerView.adapter = mAdapter
 //        val intent = Intent(mContext, MainActivity::class.java)
         var bundle : Bundle = activity!!.intent.extras

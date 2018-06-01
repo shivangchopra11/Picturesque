@@ -50,7 +50,7 @@ class AlbumAdapter(private val mContext: Context, val galleryFragment: GalleryFr
             var photoList : ArrayList<String> = object : ArrayList<String>(){}
             for(i : PhonePhoto in album.getAlbumPhotos()) {
                 photoList.add(i.getPhotoUri()!!)
-                Log.v("photo",i.getPhotoUri())
+//                Log.v("photo",i.getPhotoUri())
             }
             var bundle = Bundle()
             bundle.putStringArrayList("photos",photoList)
