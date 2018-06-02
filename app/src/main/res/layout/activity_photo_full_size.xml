@@ -12,28 +12,28 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-        <android.support.v7.widget.AppCompatImageButton
+        <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/btn_share"
             android:background="@android:color/transparent"
             android:src="@drawable/baseline_share_black_24dp"/>
-        <android.support.v7.widget.AppCompatImageButton
+        <ImageButton
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
             android:id="@+id/btn_edit"
             android:src="@drawable/baseline_edit_black_24dp"/>
-        <android.support.v7.widget.AppCompatImageButton
+        <ImageButton
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
             android:id="@+id/btn_delete"
             android:src="@drawable/baseline_delete_black_24dp"/>
-        <android.support.v7.widget.AppCompatImageButton
+        <ImageButton
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
