@@ -8,12 +8,12 @@ import android.opengl.GLES20
 
 
 
-class Square() {
+class Square(floatArray: FloatArray) {
 
 
 
-    private val vertices = floatArrayOf(-1f, -1f, 1f, -1f, -1f, 1f, 1f, 1f)
-    private val textureVertices = floatArrayOf(0f, 1f, 1f, 1f, 0f, 0f, 1f, 0f)
+    private var vertices = floatArrayOf(0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f)
+    private val textureVertices = floatArrayOf(0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f)
     private var verticesBuffer: FloatBuffer? = null
     private var textureBuffer: FloatBuffer? = null
 
@@ -96,6 +96,7 @@ class Square() {
     }
 
     init {
+        vertices = floatArray
         initializeBuffers()
         initializeProgram()
     }
