@@ -2,16 +2,14 @@ package com.example.shivang.picturesque.Camera
 
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.*
-import android.os.Environment
-import android.os.Handler
+import android.os.*
 import android.support.v4.app.ActivityCompat
-import android.os.HandlerThread
 import android.util.Log
 import android.util.Size
 import android.view.*
@@ -25,11 +23,16 @@ import java.util.*
 
 
 
+
+
+
 class CameraFragment : Fragment(), View.OnClickListener {
 
 
     companion object {
         fun newInstance() = CameraFragment()
+        lateinit var bitmap: Bitmap
+        var galleryFolder : File? = null
     }
     private lateinit var cameraManager : CameraManager
     private var cameraFacing : Int = 0
@@ -213,7 +216,7 @@ class CameraFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private var galleryFolder : File? = null
+
     private fun createImageGallery() {
         val storageDirectory : File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
         galleryFolder = object : File(storageDirectory, resources.getString(R.string.app_name)){}
@@ -240,14 +243,42 @@ class CameraFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
+
         Log.v("CLICKED", "PIC CLICKED")
         if(v!!.id== R.id.btn_click_pic) {
+//            AsyncTask.execute({
+//                val outputPhoto = FileOutputStream(createImageFile(galleryFolder!!))
+//                lock()
+//                bitmap = textureView.bitmap
+//                unlock()
+//                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputPhoto)
+//                outputPhoto.close()
+//            })
+
+
+//            val outputPhoto = FileOutputStream(createImageFile(galleryFolder!!))
             lock()
-            val outputPhoto: FileOutputStream?
-            outputPhoto = FileOutputStream(createImageFile(galleryFolder!!))
-            textureView.bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputPhoto)
+            bitmap = textureView.bitmap
             unlock()
-            outputPhoto.close()
+            var intent = Intent(context,CameraPreview::class.java)
+            startActivity(intent)
+//            bmp.compress(Bitmap.CompressFormat.PNG, 100, outputPhoto)
+//            outputPhoto.close()
+
+
+//            val handler = Handler()
+//
+//            val r = Runnable {
+//                lock()
+//                val outputPhoto: FileOutputStream?
+//                outputPhoto = FileOutputStream(createImageFile(galleryFolder!!))
+//                textureView.bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputPhoto)
+//                unlock()
+//                outputPhoto.close()
+//            }
+//            handler.post(r)
+
+
         }
         else if(v!!.id== R.id.btn_rev_cam) {
             closeCamera()

@@ -32,7 +32,7 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
 
     constructor(context: Context,curUri : String) : this() {
         Log.v("PIC",curUri)
-        photo = MediaStore.Images.Media.getBitmap(context.contentResolver, Uri.parse("file:$curUri"))
+        photo = MediaStore.Images.Media.getBitmap(context.contentResolver, Uri.parse(curUri))
         photoWidth = photo!!.width
         photoHeight = photo!!.height
     }
@@ -79,6 +79,9 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
         Log.v("resize",""+arr[0]+arr[1]+arr[2]+arr[3]+arr[4]+arr[5])
         square = Square(arr)
     }
+
+
+
 
     private fun grayScaleEffect() {
         val factory = effectContext!!.factory

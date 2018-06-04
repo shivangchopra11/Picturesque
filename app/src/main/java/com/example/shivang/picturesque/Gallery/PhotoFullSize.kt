@@ -75,7 +75,7 @@ class PhotoFullSize : AppCompatActivity(),View.OnClickListener {
     override fun onClick(v: View?) {
         if(v!!.id==R.id.btn_edit) {
             var intent = Intent(this,PhotoEditor::class.java)
-            intent.putExtra("curPic",imageList[mPager.currentItem])
+            intent.putExtra("curPic","file:"+imageList[mPager.currentItem])
 //            Log.v("PIC",imageList[currentPage])
             startActivity(intent)
         }
