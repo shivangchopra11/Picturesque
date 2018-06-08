@@ -105,6 +105,7 @@ class MainActivity : AppCompatActivity(), OnRequestPermissionsResultCallback, Pe
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.mainFrag, GalleryFragment.newInstance() as Fragment)
                         .commit()
+                setActionBarTitle(resources.getString(R.string.app_name))
                 intent.putExtra("status",0)
 
             }
@@ -114,5 +115,9 @@ class MainActivity : AppCompatActivity(), OnRequestPermissionsResultCallback, Pe
         }
         else
             super.onBackPressed()
+    }
+
+    fun setActionBarTitle(title: String) {
+        supportActionBar!!.title = title
     }
 }

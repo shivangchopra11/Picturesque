@@ -14,6 +14,7 @@ import com.example.shivang.picturesque.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_photo_full_size.view.*
 import java.util.*
+import kotlin.math.sign
 
 class PhotoFullSize : AppCompatActivity(),View.OnClickListener {
 
@@ -46,9 +47,10 @@ class PhotoFullSize : AppCompatActivity(),View.OnClickListener {
         imageList = bundle.getStringArrayList("photoList") as ArrayList<String>
         currentPage = intent.getIntExtra("pos",0)
         mPager = findViewById(R.id.photo_img_view_container)
-        mPager.adapter = SlidingImageAdapter(this,imageList)
+        mPager.adapter = SlidingImageAdapter(this,imageList,this)
         mPager.setCurrentItem(currentPage, true)
         numPages = imageList.size
+        setActionBarTitle(currentPage)
 
         
 //        For auto slideshow functionality
@@ -80,5 +82,9 @@ class PhotoFullSize : AppCompatActivity(),View.OnClickListener {
             startActivity(intent)
         }
 
+    }
+
+    fun setActionBarTitle(cur: Int) {
+        supportActionBar!!.title = cur.toString() + " of " + numPages.toString()
     }
 }

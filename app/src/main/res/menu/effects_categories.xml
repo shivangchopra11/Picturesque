@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/effect_filter"
+        android:icon="@drawable/baseline_photo_filter_black_24dp"
+        android:title="Filter"
+        app:showAsAction="always|withText"/>
+
+    <item
+        android:id="@+id/effect_enhance"
+        android:icon="@drawable/baseline_movie_filter_black_24dp"
+        android:title="Enhance"
+        app:showAsAction="always|withText" />
+
+    <!--<item-->
+        <!--android:id="@+id/effect_sticker"-->
+        <!--android:icon="@drawable/baseline_tag_faces_black_24dp"-->
+        <!--android:title="Sticker"-->
+        <!--app:showAsAction="always|withText"/>-->
+
+
+
+
+
+    <item
+        android:id="@+id/effect_transform"
+        android:icon="@drawable/baseline_transform_black_24dp"
+        android:title="Transform"
+        app:showAsAction="always|withText"/>
+
+</menu>

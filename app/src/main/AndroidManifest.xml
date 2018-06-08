@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Gallery.PhotoFullSize" />
-        <activity android:name=".PhotoEditor.PhotoEditor" />
+        <activity android:name=".PhotoEditor.PhotoEditor"/>
         <activity android:name=".Camera.CameraPreview"></activity>
     </application>
 

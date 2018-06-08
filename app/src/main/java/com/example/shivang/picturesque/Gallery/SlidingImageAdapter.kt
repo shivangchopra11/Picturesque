@@ -1,15 +1,17 @@
 package com.example.shivang.picturesque.Gallery
 
+import android.app.Activity
 import android.content.Context
 import android.support.v4.view.PagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.example.shivang.picturesque.MainActivity
 import com.example.shivang.picturesque.R
 import com.squareup.picasso.Picasso
 
-class SlidingImageAdapter(val context:Context, private val images: ArrayList<String>) : PagerAdapter() {
+class SlidingImageAdapter(val context:Context, private val images: ArrayList<String>,val activity: Activity) : PagerAdapter() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -37,6 +39,8 @@ class SlidingImageAdapter(val context:Context, private val images: ArrayList<Str
                 .fit()
                 .placeholder( R.color.colorPrimary )
                 .into(imageView)
+
+        (activity as PhotoFullSize).setActionBarTitle(position)
 
         view.addView(imageLayout, 0)
 

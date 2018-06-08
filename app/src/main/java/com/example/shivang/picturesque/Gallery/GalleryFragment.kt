@@ -28,6 +28,7 @@ class GalleryFragment : Fragment(),OnPhoneImagesObtained {
 
     private lateinit var mAdapter: AlbumAdapter
     private lateinit var mRecyclerView: RecyclerView
+    lateinit var title : String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mContext = container!!.context
@@ -58,8 +59,10 @@ class GalleryFragment : Fragment(),OnPhoneImagesObtained {
         mRecyclerView.adapter = mAdapter
 //        val intent = Intent(mContext, MainActivity::class.java)
         var bundle : Bundle = activity!!.intent.extras
+        title = activity!!.intent.getStringExtra("album")
         var photoList = bundle.getStringArrayList("photos") as List<String>
         mAdapter.setPhotoList(photoList)
+        (activity as MainActivity).setActionBarTitle(title)
     }
 
 
