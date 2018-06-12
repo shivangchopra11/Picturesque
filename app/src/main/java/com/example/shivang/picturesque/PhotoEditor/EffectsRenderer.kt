@@ -13,10 +13,9 @@ import android.util.Log
 import android.media.effect.Effect
 import android.media.effect.EffectContext
 import android.media.effect.EffectFactory
-
-
-
-
+import java.nio.IntBuffer
+import android.opengl.ETC1.getHeight
+import android.opengl.ETC1.getWidth
 
 
 
@@ -28,15 +27,13 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
     private var photoHeight: Int = 0
     private var effectContext: EffectContext? = null
     private var effect: Effect? = null
+    var bitmap: Bitmap? = null
 
 
-    companion object {
-        private var mIndex: Int? = null
-        fun setCurEffect(pos : Int) {
-            mIndex = pos
-        }
+    private var mIndex: Int? = null
+    fun setCurEffect(pos : Int) {
+        mIndex = pos
     }
-
 
     constructor(context: Context,curUri : String) : this() {
         Log.v("PIC",curUri)
@@ -69,6 +66,10 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
         }
 //        grayScaleEffect()
         square!!.draw(textures[1])
+
+//        bitmap = takeScreenshot(gl!!)
+
+
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
@@ -81,11 +82,13 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
         GLES20.glClearColor(0f,0f,0f,1f)
         var coords = computeOutputVertices()
         generateSquare(coords)
+//        bitmap = takeScreenshot(gl!!)
     }
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
         var coords = computeOutputVertices()
         generateSquare(coords)
+//        bitmap = takeScreenshot(gl!!)
     }
 
     private val textures = IntArray(2)
@@ -205,6 +208,28 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
             Log.v("resize","$x0$y0$x1$y0$x0$y1$x1$y1")
 //        }
     }
+
+//    fun takeScreenshot(mGL: GL10): Bitmap {
+//        val mWidth = photoWidth
+//        val mHeight = photoHeight
+//        val ib = IntBuffer.allocate(mWidth * mHeight)
+//        val ibt = IntBuffer.allocate(mWidth * mHeight)
+//
+//
+//        mGL.glReadPixels(0, 0, mWidth, mHeight, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, ib)
+//
+//        // Convert upside down mirror-reversed image to right-side up normal
+//        // image.
+//        for (i in 0 until mHeight) {
+//            for (j in 0 until mWidth) {
+//                ibt.put((mHeight - i - 1) * mWidth + j, ib.get(i * mWidth + j))
+//            }
+//        }
+//
+//        val mBitmap = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888)
+//        mBitmap.copyPixelsFromBuffer(ibt)
+//        return mBitmap
+//    }
 
     fun getResizedBitmap(image: Bitmap, bitmapWidth: Int, bitmapHeight: Int): Bitmap {
         return Bitmap.createScaledBitmap(image, bitmapWidth, bitmapHeight, true)

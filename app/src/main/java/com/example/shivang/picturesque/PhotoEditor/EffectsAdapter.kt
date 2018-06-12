@@ -10,8 +10,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.shivang.picturesque.Gallery.PhoneAlbum
 import com.example.shivang.picturesque.R
+import android.graphics.Bitmap
+import android.opengl.GLException
+import android.util.Log
+import java.nio.IntBuffer
+import javax.microedition.khronos.opengles.GL10
 
-class EffectsAdapter(private val mContext: Context) : RecyclerView.Adapter<EffectsAdapter.EffectsViewHolder>() {
+
+
+class EffectsAdapter(private val mContext: Context,private val curUri : String) : RecyclerView.Adapter<EffectsAdapter.EffectsViewHolder>() {
 
     private var mEffectList: ArrayList<String>? = null
     private var mInflater: LayoutInflater = LayoutInflater.from(mContext)
@@ -33,6 +40,13 @@ class EffectsAdapter(private val mContext: Context) : RecyclerView.Adapter<Effec
     override fun onBindViewHolder(holder: EffectsViewHolder, position: Int) {
         val curEffect = mEffectList!![position]
         holder.effectName.text = curEffect
+        holder.surfaceView.setEGLContextClientVersion(2)
+        var er = EffectsRenderer(mContext,curUri)
+        holder.surfaceView.setRenderer(er)
+        holder.surfaceView.renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
+        er.setCurEffect(position)
+        holder.surfaceView.requestRender()
+        Log.v("CurPic",er.bitmap.toString())
         holder.itemView.setOnClickListener({
             (mContext as PhotoEditor).onEffectClicked(position)
         })
@@ -47,7 +61,11 @@ class EffectsAdapter(private val mContext: Context) : RecyclerView.Adapter<Effec
 
 
     inner class EffectsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var imageView = itemView.findViewById(R.id.img_effect_preview) as ImageView
+        var surfaceView = itemView.findViewById(R.id.img_effect_preview) as GLSurfaceView
         var effectName = itemView.findViewById(R.id.effect_name) as TextView
     }
+
+
+
+
 }

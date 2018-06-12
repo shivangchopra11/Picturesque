@@ -3,12 +3,12 @@
     android:orientation="vertical"
     android:layout_width="50dp"
     android:layout_height="match_parent">
-    <ImageView
+    <android.opengl.GLSurfaceView
         android:id="@+id/img_effect_preview"
-        android:src="@drawable/baseline_tag_faces_black_24dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"/>
+
     <TextView
         android:id="@+id/effect_name"
         android:layout_width="match_parent"

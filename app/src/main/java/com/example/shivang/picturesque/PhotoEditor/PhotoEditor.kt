@@ -36,6 +36,7 @@ class PhotoEditor : AppCompatActivity() {
 
     lateinit var surfaceView : GLSurfaceView
     lateinit var curUri : String
+    lateinit var er : EffectsRenderer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,14 +45,15 @@ class PhotoEditor : AppCompatActivity() {
         surfaceView.setEGLContextClientVersion(2)
 
         curUri = intent.getStringExtra("curPic")
-        surfaceView.setRenderer(EffectsRenderer(this,curUri))
+        er = EffectsRenderer(this,curUri)
+        surfaceView.setRenderer(er)
         surfaceView.renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
 
         mRecyclerView = findViewById(R.id.effects_recycler_view)
         mRecyclerView.addItemDecoration(SpacesItemDecoration(4))
         mRecyclerView.layoutManager = LinearLayoutManager(applicationContext,LinearLayoutManager.HORIZONTAL,false)
 
-        mAdapter = EffectsAdapter(this)
+        mAdapter = EffectsAdapter(this,curUri)
         mRecyclerView.adapter = mAdapter
         mAdapter.setEffectList(EffectNames.filters)
 
@@ -59,7 +61,7 @@ class PhotoEditor : AppCompatActivity() {
 
     fun onEffectClicked(pos : Int) {
 //        surfaceView.setRenderer(EffectsRenderer(this,curUri,pos))
-        EffectsRenderer.setCurEffect(pos)
+        er.setCurEffect(pos)
         surfaceView.requestRender()
     }
 
