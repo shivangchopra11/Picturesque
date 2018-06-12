@@ -30,12 +30,23 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
     private var effect: Effect? = null
 
 
+    companion object {
+        private var mIndex: Int? = null
+        fun setCurEffect(pos : Int) {
+            mIndex = pos
+        }
+    }
+
+
     constructor(context: Context,curUri : String) : this() {
         Log.v("PIC",curUri)
         photo = MediaStore.Images.Media.getBitmap(context.contentResolver, Uri.parse(curUri))
         photoWidth = photo!!.width
         photoHeight = photo!!.height
+        mIndex = 0
     }
+
+
 
     override fun onDrawFrame(gl: GL10?) {
         if(effectContext==null) {
@@ -44,7 +55,19 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
         if(effect!=null){
             effect!!.release()
         }
-        grayScaleEffect()
+        Log.v("Index",mIndex.toString())
+        when(mIndex) {
+            0 -> blackAndWhiteEffect()
+            1 -> documentaryEffect()
+            2 -> duotoneEffect()
+            3 -> grainEffect()
+            4 -> grayScaleEffect()
+            5 -> negativeEffect()
+            6 -> posterizeEffect()
+            7 -> sepiaEffect()
+            8 -> vignetteEffect()
+        }
+//        grayScaleEffect()
         square!!.draw(textures[1])
     }
 
@@ -82,10 +105,11 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
 
 
 
-
-    private fun grayScaleEffect() {
+    private fun blackAndWhiteEffect() {
         val factory = effectContext!!.factory
-        effect = factory.createEffect(EffectFactory.EFFECT_GRAYSCALE)
+        effect = factory.createEffect(EffectFactory.EFFECT_BLACKWHITE)
+        effect!!.setParameter("black", 0.5f)
+        effect!!.setParameter("white", 0.5f)
         effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
     }
 
@@ -94,6 +118,52 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
         effect = factory.createEffect(EffectFactory.EFFECT_DOCUMENTARY)
         effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
     }
+
+    private fun duotoneEffect() {
+        val factory = effectContext!!.factory
+        effect = factory.createEffect(EffectFactory.EFFECT_DUOTONE)
+        effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
+    }
+
+    private fun grainEffect() {
+        val factory = effectContext!!.factory
+        effect = factory.createEffect(EffectFactory.EFFECT_GRAIN)
+        effect!!.setParameter("strength", 1f)
+        effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
+    }
+
+    private fun grayScaleEffect() {
+        val factory = effectContext!!.factory
+        effect = factory.createEffect(EffectFactory.EFFECT_GRAYSCALE)
+        effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
+    }
+
+    private fun negativeEffect() {
+        val factory = effectContext!!.factory
+        effect = factory.createEffect(EffectFactory.EFFECT_NEGATIVE)
+        effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
+    }
+
+    private fun posterizeEffect() {
+        val factory = effectContext!!.factory
+        effect = factory.createEffect(EffectFactory.EFFECT_POSTERIZE)
+        effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
+    }
+
+    private fun sepiaEffect() {
+        val factory = effectContext!!.factory
+        effect = factory.createEffect(EffectFactory.EFFECT_SEPIA)
+        effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
+    }
+
+    private fun vignetteEffect() {
+        val factory = effectContext!!.factory
+        effect = factory.createEffect(EffectFactory.EFFECT_VIGNETTE)
+        effect!!.setParameter("scale", 0.5f)
+        effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
+    }
+
+
 
     private fun brightnessEffect() {
         val factory = effectContext!!.factory
