@@ -46,6 +46,7 @@ class EffectsAdapter(private val mContext: Context,private val curUri : String,p
         holder.surfaceView.setRenderer(er)
         holder.surfaceView.renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
         er.setCurEffect(position)
+        er.setFactor(0.5f)
         holder.surfaceView.requestRender()
         Log.v("CurPic",er.bitmap.toString())
         holder.itemView.setOnClickListener({
