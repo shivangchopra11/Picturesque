@@ -116,7 +116,7 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
     private fun blackAndWhiteEffect(factor : Float = 0.5f) {
         val factory = effectContext!!.factory
         effect = factory.createEffect(EffectFactory.EFFECT_BLACKWHITE)
-//        effect!!.setParameter("black", factor)
+        effect!!.setParameter("black", factor)
         effect!!.setParameter("white", factor)
         effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
     }
@@ -167,6 +167,7 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
     private fun vignetteEffect(factor : Float = 0.5f) {
         val factory = effectContext!!.factory
         effect = factory.createEffect(EffectFactory.EFFECT_VIGNETTE)
+//        Log.v("CURFAC",factor.toString())
         effect!!.setParameter("scale", factor)
         effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
     }

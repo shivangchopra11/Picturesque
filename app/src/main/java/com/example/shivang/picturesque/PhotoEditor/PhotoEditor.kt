@@ -54,7 +54,7 @@ class PhotoEditor : AppCompatActivity() {
             // updated continuously as the user slides the thumb
             er.setCurEffect(curPos)
 //            Log.v("EffectPos",curPos.toString())
-            mFactor = progress / (1000.0f)
+            mFactor = progress / (100.0f)
             er.setFactor(mFactor)
             surfaceView.requestRender()
         }
