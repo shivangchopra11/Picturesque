@@ -10,6 +10,11 @@ import com.example.shivang.picturesque.R
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
+import android.view.View
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.SeekBar
 import com.example.shivang.picturesque.Gallery.AlbumAdapter
 import com.example.shivang.picturesque.Gallery.SpacesItemDecoration
 
@@ -37,12 +42,50 @@ class PhotoEditor : AppCompatActivity() {
     lateinit var surfaceView : GLSurfaceView
     lateinit var curUri : String
     lateinit var er : EffectsRenderer
+    lateinit var navigationView: BottomNavigationView
+    lateinit var effectDoneBtn : ImageButton
+    lateinit var seekBar : SeekBar
+    private var curPos : Int = 0
+    var mFactor : Float = 0.0f
+
+    var seekBarChangeListener: SeekBar.OnSeekBarChangeListener = object : SeekBar.OnSeekBarChangeListener {
+
+        override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+            // updated continuously as the user slides the thumb
+            er.setCurEffect(curPos)
+//            Log.v("EffectPos",curPos.toString())
+            mFactor = progress / (1000.0f)
+            er.setFactor(mFactor)
+            surfaceView.requestRender()
+        }
+
+        override fun onStartTrackingTouch(seekBar: SeekBar) {
+            // called when the user first touches the SeekBar
+            er.setCurEffect(curPos)
+            er.setFactor(mFactor)
+            surfaceView.requestRender()
+        }
+
+        override fun onStopTrackingTouch(seekBar: SeekBar) {
+            // called after the user finishes moving the SeekBar
+            er.setCurEffect(curPos)
+            er.setFactor(mFactor)
+            surfaceView.requestRender()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo_editor)
         surfaceView = findViewById(R.id.photo_for_edit)
         surfaceView.setEGLContextClientVersion(2)
+        navigationView = findViewById(R.id.navigation)
+        effectDoneBtn = findViewById(R.id.effect_done_btn)
+        seekBar = findViewById(R.id.seek_bar_effect)
+        seekBar.setOnSeekBarChangeListener(seekBarChangeListener)
+        effectDoneBtn.setOnClickListener({
+            navigationView.visibility = View.VISIBLE
+        })
 
         curUri = intent.getStringExtra("curPic")
         er = EffectsRenderer(this,curUri)
@@ -53,7 +96,7 @@ class PhotoEditor : AppCompatActivity() {
         mRecyclerView.addItemDecoration(SpacesItemDecoration(4))
         mRecyclerView.layoutManager = LinearLayoutManager(applicationContext,LinearLayoutManager.HORIZONTAL,false)
 
-        mAdapter = EffectsAdapter(this,curUri)
+        mAdapter = EffectsAdapter(this,curUri,navigationView)
         mRecyclerView.adapter = mAdapter
         mAdapter.setEffectList(EffectNames.filters)
 
@@ -61,6 +104,7 @@ class PhotoEditor : AppCompatActivity() {
 
     fun onEffectClicked(pos : Int) {
 //        surfaceView.setRenderer(EffectsRenderer(this,curUri,pos))
+        curPos = pos
         er.setCurEffect(pos)
         surfaceView.requestRender()
     }

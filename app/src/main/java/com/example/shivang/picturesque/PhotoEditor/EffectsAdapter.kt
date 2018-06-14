@@ -12,13 +12,14 @@ import com.example.shivang.picturesque.Gallery.PhoneAlbum
 import com.example.shivang.picturesque.R
 import android.graphics.Bitmap
 import android.opengl.GLException
+import android.support.design.widget.BottomNavigationView
 import android.util.Log
 import java.nio.IntBuffer
 import javax.microedition.khronos.opengles.GL10
 
 
 
-class EffectsAdapter(private val mContext: Context,private val curUri : String) : RecyclerView.Adapter<EffectsAdapter.EffectsViewHolder>() {
+class EffectsAdapter(private val mContext: Context,private val curUri : String,private val navigationView: BottomNavigationView) : RecyclerView.Adapter<EffectsAdapter.EffectsViewHolder>() {
 
     private var mEffectList: ArrayList<String>? = null
     private var mInflater: LayoutInflater = LayoutInflater.from(mContext)
@@ -49,6 +50,7 @@ class EffectsAdapter(private val mContext: Context,private val curUri : String) 
         Log.v("CurPic",er.bitmap.toString())
         holder.itemView.setOnClickListener({
             (mContext as PhotoEditor).onEffectClicked(position)
+            navigationView.visibility = View.GONE
         })
     }
 

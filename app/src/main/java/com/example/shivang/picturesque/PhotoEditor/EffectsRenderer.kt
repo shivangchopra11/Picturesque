@@ -28,11 +28,16 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
     private var effectContext: EffectContext? = null
     private var effect: Effect? = null
     var bitmap: Bitmap? = null
+    private var mFactor : Float = 0.0f
 
 
     private var mIndex: Int? = null
     fun setCurEffect(pos : Int) {
         mIndex = pos
+    }
+
+    fun setFactor(factor : Float) {
+        mFactor = factor
     }
 
     constructor(context: Context,curUri : String) : this() {
@@ -54,15 +59,15 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
         }
         Log.v("Index",mIndex.toString())
         when(mIndex) {
-            0 -> blackAndWhiteEffect()
+            0 -> blackAndWhiteEffect(mFactor)
             1 -> documentaryEffect()
             2 -> duotoneEffect()
-            3 -> grainEffect()
+            3 -> grainEffect(mFactor)
             4 -> grayScaleEffect()
             5 -> negativeEffect()
             6 -> posterizeEffect()
             7 -> sepiaEffect()
-            8 -> vignetteEffect()
+            8 -> vignetteEffect(mFactor)
         }
 //        grayScaleEffect()
         square!!.draw(textures[1])
@@ -108,11 +113,11 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
 
 
 
-    private fun blackAndWhiteEffect() {
+    private fun blackAndWhiteEffect(factor : Float = 0.5f) {
         val factory = effectContext!!.factory
         effect = factory.createEffect(EffectFactory.EFFECT_BLACKWHITE)
-        effect!!.setParameter("black", 0.5f)
-        effect!!.setParameter("white", 0.5f)
+//        effect!!.setParameter("black", factor)
+        effect!!.setParameter("white", factor)
         effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
     }
 
@@ -128,10 +133,10 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
         effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
     }
 
-    private fun grainEffect() {
+    private fun grainEffect(factor : Float = 0.5f) {
         val factory = effectContext!!.factory
         effect = factory.createEffect(EffectFactory.EFFECT_GRAIN)
-        effect!!.setParameter("strength", 1f)
+        effect!!.setParameter("strength", factor)
         effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
     }
 
@@ -159,10 +164,10 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
         effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
     }
 
-    private fun vignetteEffect() {
+    private fun vignetteEffect(factor : Float = 0.5f) {
         val factory = effectContext!!.factory
         effect = factory.createEffect(EffectFactory.EFFECT_VIGNETTE)
-        effect!!.setParameter("scale", 0.5f)
+        effect!!.setParameter("scale", factor)
         effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
     }
 
