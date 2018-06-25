@@ -24,6 +24,7 @@ class EffectsAdapter(private val mContext: Context,private val curUri : String,p
     private var mEffectList: ArrayList<String>? = null
     private var mInflater: LayoutInflater = LayoutInflater.from(mContext)
     lateinit var view : View
+    private var type : Int = 0
 
     init {
         this.mEffectList = ArrayList()
@@ -43,21 +44,23 @@ class EffectsAdapter(private val mContext: Context,private val curUri : String,p
         holder.effectName.text = curEffect
         holder.surfaceView.setEGLContextClientVersion(2)
         var er = EffectsRenderer(mContext,curUri)
+
         holder.surfaceView.setRenderer(er)
         holder.surfaceView.renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
-        er.setCurEffect(position)
+        er.setCurEffect(position+(type*10))
         er.setFactor(0.5f)
         holder.surfaceView.requestRender()
         Log.v("CurPic",er.bitmap.toString())
-        holder.itemView.setOnClickListener({
-            (mContext as PhotoEditor).onEffectClicked(position)
+        holder.itemView.setOnClickListener{
+            (mContext as PhotoEditor).onEffectClicked(position+(type*10))
             navigationView.visibility = View.GONE
-        })
+        }
     }
 
-    fun setEffectList(effectList: List<String>) {
+    fun setEffectList(effectList: List<String>, curType : Int) {
         this.mEffectList!!.clear()
         this.mEffectList!!.addAll(effectList)
+        this.type = curType
         // The adapter needs to know that the data has changed. If we don't call this, app will crash.
         notifyDataSetChanged()
     }

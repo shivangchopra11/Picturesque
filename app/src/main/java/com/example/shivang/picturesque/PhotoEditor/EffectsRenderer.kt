@@ -59,15 +59,26 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
         }
         Log.v("Index",mIndex.toString())
         when(mIndex) {
-            0 -> blackAndWhiteEffect(mFactor)
-            1 -> documentaryEffect()
-            2 -> duotoneEffect()
-            3 -> grainEffect(mFactor)
-            4 -> grayScaleEffect()
-            5 -> negativeEffect()
-            6 -> posterizeEffect()
-            7 -> sepiaEffect()
-            8 -> vignetteEffect(mFactor)
+            0 -> grainEffect(0f)
+            1 -> blackAndWhiteEffect(mFactor)
+            2 -> documentaryEffect()
+            3 -> duotoneEffect()
+            4 -> grainEffect(mFactor)
+            5 -> grayScaleEffect()
+            6 -> negativeEffect()
+            7 -> posterizeEffect()
+            8 -> sepiaEffect()
+            9 -> vignetteEffect(mFactor)
+
+            10 -> autofixEffect(mFactor)
+            11 -> brightnessEffect(mFactor)
+            12 -> contrastEffect(mFactor)
+            13 -> crossprocessEffect(mFactor)
+            14 -> fisheyeEffect(mFactor)
+            15 -> sharpenEffect(mFactor)
+            16 -> straightenEffect(mFactor)
+            17 -> temperatureEffect(mFactor)
+            18 -> tintEffect(mFactor)
         }
 //        grayScaleEffect()
         square!!.draw(textures[1])
@@ -173,14 +184,70 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
     }
 
 
-
-    private fun brightnessEffect() {
+    private fun autofixEffect(factor : Float = 0.5f) {
         val factory = effectContext!!.factory
-        effect = factory.createEffect(EffectFactory.EFFECT_BRIGHTNESS)
-        effect!!.setParameter("brightness", 2f)
+        effect = factory.createEffect(EffectFactory.EFFECT_AUTOFIX)
+        effect!!.setParameter("scale", factor)
         effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
     }
 
+
+
+    private fun brightnessEffect(factor : Float = 0.5f) {
+        val factory = effectContext!!.factory
+        effect = factory.createEffect(EffectFactory.EFFECT_BRIGHTNESS)
+        effect!!.setParameter("brightness", factor)
+        effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
+    }
+
+    private fun contrastEffect(factor : Float = 1.0f) {
+        val factory = effectContext!!.factory
+        effect = factory.createEffect(EffectFactory.EFFECT_CONTRAST)
+        effect!!.setParameter("contrast", factor*10)
+        effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
+    }
+
+    private fun crossprocessEffect(factor : Float = 1.0f) {
+        val factory = effectContext!!.factory
+        effect = factory.createEffect(EffectFactory.EFFECT_CROSSPROCESS)
+        effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
+    }
+
+    private fun fisheyeEffect(factor : Float = 0.5f) {
+        val factory = effectContext!!.factory
+        effect = factory.createEffect(EffectFactory.EFFECT_FISHEYE)
+        effect!!.setParameter("scale", factor)
+        effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
+    }
+
+
+    private fun sharpenEffect(factor : Float = 0.5f) {
+        val factory = effectContext!!.factory
+        effect = factory.createEffect(EffectFactory.EFFECT_SHARPEN)
+        effect!!.setParameter("scale", factor)
+        effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
+    }
+
+    private fun straightenEffect(factor : Float = 1.0f) {
+        val factory = effectContext!!.factory
+        effect = factory.createEffect(EffectFactory.EFFECT_STRAIGHTEN)
+        effect!!.setParameter("angle", factor*45)
+        effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
+    }
+
+    private fun temperatureEffect(factor : Float = 0.5f) {
+        val factory = effectContext!!.factory
+        effect = factory.createEffect(EffectFactory.EFFECT_TEMPERATURE)
+        effect!!.setParameter("scale", factor)
+        effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
+    }
+
+    private fun tintEffect(factor : Float = 0.5f) {
+        val factory = effectContext!!.factory
+        effect = factory.createEffect(EffectFactory.EFFECT_FISHEYE)
+//        effect!!.setParameter("scale", factor)
+        effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
+    }
 
     private var mViewWidth: Int = 0
     private var mViewHeight: Int = 0

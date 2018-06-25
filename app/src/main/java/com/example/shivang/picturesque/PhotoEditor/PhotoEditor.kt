@@ -27,13 +27,17 @@ class PhotoEditor : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.effect_filter -> {
-                return@OnNavigationItemSelectedListener true
+                navigationView.menu.getItem(0).isChecked = true
+                mRecyclerView.adapter = mAdapter
+                mAdapter.setEffectList(EffectNames.filters,0)
             }
             R.id.effect_enhance -> {
-                return@OnNavigationItemSelectedListener true
+                navigationView.menu.getItem(1).isChecked = true
+                mRecyclerView.adapter = mAdapter
+                mAdapter.setEffectList(EffectNames.enhance,1)
             }
             R.id.effect_transform -> {
-                return@OnNavigationItemSelectedListener true
+                navigationView.menu.getItem(2).isChecked = true
             }
         }
         false
@@ -79,13 +83,14 @@ class PhotoEditor : AppCompatActivity() {
         setContentView(R.layout.activity_photo_editor)
         surfaceView = findViewById(R.id.photo_for_edit)
         surfaceView.setEGLContextClientVersion(2)
-        navigationView = findViewById(R.id.navigation)
+        navigationView = findViewById(R.id.navigationEffect)
+        navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         effectDoneBtn = findViewById(R.id.effect_done_btn)
         seekBar = findViewById(R.id.seek_bar_effect)
         seekBar.setOnSeekBarChangeListener(seekBarChangeListener)
-        effectDoneBtn.setOnClickListener({
+        effectDoneBtn.setOnClickListener{
             navigationView.visibility = View.VISIBLE
-        })
+        }
 
         curUri = intent.getStringExtra("curPic")
         er = EffectsRenderer(this,curUri)
@@ -98,7 +103,7 @@ class PhotoEditor : AppCompatActivity() {
 
         mAdapter = EffectsAdapter(this,curUri,navigationView)
         mRecyclerView.adapter = mAdapter
-        mAdapter.setEffectList(EffectNames.filters)
+        mAdapter.setEffectList(EffectNames.filters,0)
 
     }
 

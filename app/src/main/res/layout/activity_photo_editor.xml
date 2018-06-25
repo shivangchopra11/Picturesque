@@ -43,7 +43,7 @@
                     android:src="@drawable/baseline_check_black_24dp"/>
             </LinearLayout>
             <android.support.design.widget.BottomNavigationView
-                android:id="@+id/navigation"
+                android:id="@+id/navigationEffect"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?android:attr/windowBackground"
