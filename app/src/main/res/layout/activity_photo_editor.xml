@@ -14,11 +14,62 @@
         android:layout_height="0dp"
         android:layout_weight="4"
         android:orientation="vertical">
-        <android.support.v7.widget.RecyclerView
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
-            android:id="@+id/effects_recycler_view"/>
+            android:layout_weight="3">
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/effects_recycler_view"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/effect_transform_bar">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <ImageButton
+                        android:layout_width="match_parent"
+                        android:background="@android:color/white"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:id="@+id/effect_crop"
+                        android:src="@drawable/baseline_crop_black_18dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/white"
+                        android:text="Crop"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <ImageButton
+                        android:layout_width="match_parent"
+                        android:background="@android:color/white"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:id="@+id/effect_rotate"
+                        android:src="@drawable/baseline_crop_rotate_black_18dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/white"
+                        android:text="Rotate"
+                        android:gravity="center"/>
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+
 
         <FrameLayout
             android:layout_width="match_parent"

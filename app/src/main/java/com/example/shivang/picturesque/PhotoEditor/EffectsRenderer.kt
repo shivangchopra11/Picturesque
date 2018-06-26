@@ -58,17 +58,18 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
             effect!!.release()
         }
         Log.v("Index",mIndex.toString())
+        GLES20.glViewport(0,0,mViewWidth, mViewHeight)
+        GLES20.glClearColor(0f,0f,0f,1f)
         when(mIndex) {
-            0 -> grainEffect(0f)
+            3 -> documentaryEffect()
             1 -> blackAndWhiteEffect(mFactor)
-            2 -> documentaryEffect()
-            3 -> duotoneEffect()
-            4 -> grainEffect(mFactor)
-            5 -> grayScaleEffect()
-            6 -> negativeEffect()
-            7 -> posterizeEffect()
-            8 -> sepiaEffect()
-            9 -> vignetteEffect(mFactor)
+            2 -> duotoneEffect()
+            0 -> grainEffect(mFactor)
+            4 -> grayScaleEffect()
+            5 -> negativeEffect()
+            6 -> posterizeEffect()
+            7 -> sepiaEffect()
+            8 -> vignetteEffect(mFactor)
 
             10 -> autofixEffect(mFactor)
             11 -> brightnessEffect(mFactor)
@@ -79,6 +80,11 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
             16 -> straightenEffect(mFactor)
             17 -> temperatureEffect(mFactor)
             18 -> tintEffect(mFactor)
+
+            20 -> rotateEffect(mFactor)
+
+
+            else -> autofixEffect(mFactor)
         }
 //        grayScaleEffect()
         square!!.draw(textures[1])
@@ -228,10 +234,10 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
         effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
     }
 
-    private fun straightenEffect(factor : Float = 1.0f) {
+    private fun straightenEffect(factor : Float = 0.5f) {
         val factory = effectContext!!.factory
         effect = factory.createEffect(EffectFactory.EFFECT_STRAIGHTEN)
-        effect!!.setParameter("angle", factor*45)
+        effect!!.setParameter("angle", (factor-0.5f)*90)
         effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
     }
 
@@ -248,6 +254,45 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
 //        effect!!.setParameter("scale", factor)
         effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
     }
+
+    private fun rotateEffect(factor : Float = 0.5f) {
+        val factory = effectContext!!.factory
+        effect = factory.createEffect(EffectFactory.EFFECT_ROTATE)
+
+        var angle = if(factor>=0.5 && factor<0.75)
+            0
+        else if(factor>0.75)
+            90
+        else if(factor<0.5 && factor>0.25)
+            -90
+        else
+            -180
+        if(angle==90 || angle==-90) {
+            GLES20.glViewport(0,0,mViewWidth, mViewHeight)
+            GLES20.glClearColor(0f,0f,0f,1f)
+            var coords = computeOutputVertices()
+            generateSquare(coords)
+            photo = getResizedBitmap(photo!!,mViewWidth,mViewWidth)
+            photoWidth = photo!!.width
+            photoHeight = photo!!.height
+        }
+        else {
+            GLES20.glViewport(0,0,mViewWidth, mViewHeight)
+            GLES20.glClearColor(0f,0f,0f,1f)
+            var coords = computeOutputVertices()
+            generateSquare(coords)
+            photo = getResizedBitmap(photo!!,mViewWidth,mViewHeight)
+            photoWidth = photo!!.width
+            photoHeight = photo!!.height
+        }
+
+
+        effect!!.setParameter("angle", angle)
+        effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
+    }
+
+
+
 
     private var mViewWidth: Int = 0
     private var mViewHeight: Int = 0
@@ -278,7 +323,6 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
             }
         //            mPosVertices.put(coords).position(0)
             return floatArrayOf(x0, y0, x1, y0, x0, y1, x1, y1)
-            Log.v("resize","$x0$y0$x1$y0$x0$y1$x1$y1")
 //        }
     }
 

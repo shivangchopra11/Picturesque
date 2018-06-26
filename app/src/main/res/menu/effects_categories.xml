@@ -2,6 +2,11 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item
+        android:id="@+id/effect_transform"
+        android:icon="@drawable/baseline_transform_black_24dp"
+        android:title="Transform"
+        app:showAsAction="always|withText"/>
 
     <item
         android:id="@+id/effect_filter"
@@ -25,10 +30,6 @@
 
 
 
-    <item
-        android:id="@+id/effect_transform"
-        android:icon="@drawable/baseline_transform_black_24dp"
-        android:title="Transform"
-        app:showAsAction="always|withText"/>
+
 
 </menu>

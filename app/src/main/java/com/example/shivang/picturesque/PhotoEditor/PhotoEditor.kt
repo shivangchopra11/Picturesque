@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import com.example.shivang.picturesque.Gallery.AlbumAdapter
 import com.example.shivang.picturesque.Gallery.SpacesItemDecoration
+import kotlinx.android.synthetic.main.activity_photo_editor.*
 
 
 class PhotoEditor : AppCompatActivity() {
@@ -27,17 +28,21 @@ class PhotoEditor : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.effect_filter -> {
-                navigationView.menu.getItem(0).isChecked = true
+                navigationView.menu.getItem(1).isChecked = true
+                effect_transform_bar.visibility = View.GONE
                 mRecyclerView.adapter = mAdapter
                 mAdapter.setEffectList(EffectNames.filters,0)
             }
             R.id.effect_enhance -> {
-                navigationView.menu.getItem(1).isChecked = true
+                navigationView.menu.getItem(2).isChecked = true
+                effect_transform_bar.visibility = View.GONE
                 mRecyclerView.adapter = mAdapter
                 mAdapter.setEffectList(EffectNames.enhance,1)
             }
             R.id.effect_transform -> {
-                navigationView.menu.getItem(2).isChecked = true
+                navigationView.menu.getItem(0).isChecked = true
+                effect_transform_bar.visibility = View.VISIBLE
+
             }
         }
         false
@@ -103,7 +108,13 @@ class PhotoEditor : AppCompatActivity() {
 
         mAdapter = EffectsAdapter(this,curUri,navigationView)
         mRecyclerView.adapter = mAdapter
-        mAdapter.setEffectList(EffectNames.filters,0)
+//        mAdapter.setEffectList(EffectNames.filters,0)
+
+
+        effect_rotate.setOnClickListener{
+            onEffectClicked(20)
+            navigationView.visibility = View.GONE
+        }
 
     }
 
