@@ -8,7 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="14"
-        android:id="@+id/photo_for_edit"/>
+        android:id="@+id/photo_for_edit"
+        android:layout_gravity="center"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -58,7 +59,7 @@
                         android:layout_height="0dp"
                         android:layout_weight="3"
                         android:id="@+id/effect_rotate"
-                        android:src="@drawable/baseline_crop_rotate_black_18dp"/>
+                        android:src="@drawable/baseline_rotate_right_black_18dp"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"

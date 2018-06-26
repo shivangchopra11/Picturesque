@@ -9,6 +9,8 @@ import android.util.Log
 import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback
 import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AppCompatActivity
+import android.view.Window
+import android.view.WindowManager
 import com.example.shivang.picturesque.Camera.CameraFragment
 import com.example.shivang.picturesque.Gallery.GalleryFragment
 import com.example.shivang.picturesque.Permissions.PermissionResultCallback
@@ -39,12 +41,14 @@ class MainActivity : AppCompatActivity(), OnRequestPermissionsResultCallback, Pe
     }
 
     private fun showCameraPreview() {
+        supportActionBar!!.hide()
         supportFragmentManager.beginTransaction()
                 .replace(R.id.mainFrag, CameraFragment.newInstance() as Fragment)
                 .commit()
     }
 
     private fun showGallery() {
+        supportActionBar!!.show()
         supportFragmentManager.beginTransaction()
                 .replace(R.id.mainFrag, GalleryFragment.newInstance() as Fragment)
                 .commit()
@@ -53,6 +57,8 @@ class MainActivity : AppCompatActivity(), OnRequestPermissionsResultCallback, Pe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         setContentView(R.layout.activity_main)
 
 

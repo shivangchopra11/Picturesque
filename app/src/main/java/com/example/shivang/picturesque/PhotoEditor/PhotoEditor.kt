@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
+import android.view.Window
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SeekBar
@@ -41,7 +42,7 @@ class PhotoEditor : AppCompatActivity() {
             }
             R.id.effect_transform -> {
                 navigationView.menu.getItem(0).isChecked = true
-                effect_transform_bar.visibility = View.VISIBLE
+//                effect_transform_bar.visibility = View.VISIBLE
 
             }
         }
@@ -113,7 +114,7 @@ class PhotoEditor : AppCompatActivity() {
 
         effect_rotate.setOnClickListener{
             onEffectClicked(20)
-            navigationView.visibility = View.GONE
+//            navigationView.visibility = View.GONE
         }
 
     }

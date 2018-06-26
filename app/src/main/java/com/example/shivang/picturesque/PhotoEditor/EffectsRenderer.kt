@@ -22,6 +22,10 @@ import android.opengl.ETC1.getWidth
 
 class EffectsRenderer() : GLSurfaceView.Renderer {
 
+    companion object {
+        var angle : Int = 0
+    }
+
     private var photo: Bitmap? = null
     private var photoWidth: Int = 0
     private var photoHeight: Int = 0
@@ -259,33 +263,27 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
         val factory = effectContext!!.factory
         effect = factory.createEffect(EffectFactory.EFFECT_ROTATE)
 
-        var angle = if(factor>=0.5 && factor<0.75)
-            0
-        else if(factor>0.75)
-            90
-        else if(factor<0.5 && factor>0.25)
-            -90
-        else
-            -180
-        if(angle==90 || angle==-90) {
-            GLES20.glViewport(0,0,mViewWidth, mViewHeight)
-            GLES20.glClearColor(0f,0f,0f,1f)
-            var coords = computeOutputVertices()
-            generateSquare(coords)
-            photo = getResizedBitmap(photo!!,mViewWidth,mViewWidth)
-            photoWidth = photo!!.width
-            photoHeight = photo!!.height
-        }
-        else {
-            GLES20.glViewport(0,0,mViewWidth, mViewHeight)
-            GLES20.glClearColor(0f,0f,0f,1f)
-            var coords = computeOutputVertices()
-            generateSquare(coords)
+        angle += 90
+        angle %= 360
+
+        Log.v("Angle", angle.toString())
+
+        GLES20.glViewport(0,0,mViewWidth, mViewHeight)
+        GLES20.glClearColor(0f,0f,0f,1f)
+
+        if(angle==0 || angle==180) {
             photo = getResizedBitmap(photo!!,mViewWidth,mViewHeight)
             photoWidth = photo!!.width
             photoHeight = photo!!.height
         }
+        else {
+            photo = getResizedBitmap(photo!!,mViewWidth,mViewWidth)
+            photoWidth = photo!!.width
+            photoHeight = photo!!.width
+        }
 
+        var coords = computeOutputVertices()
+        generateSquare(coords)
 
         effect!!.setParameter("angle", angle)
         effect!!.apply(textures[0], photoWidth, photoHeight, textures[1])
@@ -306,10 +304,10 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
             var mViewHeight1 : Float = mViewHeight * 1.0f
             val viewAspectRatio = mViewWidth1/ mViewHeight1
             val relativeAspectRatio = viewAspectRatio / imgAspectRatio
-            val x0: Float
-            val y0: Float
-            val x1: Float
-            val y1: Float
+            var x0: Float
+            var y0: Float
+            var x1: Float
+            var y1: Float
             if (relativeAspectRatio > 1.0f) {
                 x0 = -1.0f / relativeAspectRatio
                 y0 = -1.0f
@@ -320,6 +318,13 @@ class EffectsRenderer() : GLSurfaceView.Renderer {
                 y0 = -relativeAspectRatio
                 x1 = 1.0f
                 y1 = relativeAspectRatio
+            }
+
+            if(photoHeight<mViewHeight) {
+                x0 = -1.0f
+                y0 = -relativeAspectRatio+0.5f
+                x1 = 1.0f
+                y1 = relativeAspectRatio+0.5f
             }
         //            mPosVertices.put(coords).position(0)
             return floatArrayOf(x0, y0, x1, y0, x0, y1, x1, y1)
